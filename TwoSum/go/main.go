@@ -19,6 +19,24 @@ func twoSum(nums []int, target int) []int {
     return ret
 }
 
+func twoSum_2(nums []int, target int) []int {
+    var ret []int
+    var hmap map[int]int = make(map[int]int, len(nums))
+    for i := 0; i < len(nums); i++ {
+        hmap[nums[i]] = i
+    }
+    for i := 0; i < len(nums) - 1; i++ {
+        sub := target - nums[i]
+        index, ok := hmap[sub]
+        if ok && index != i {
+            ret = append(ret, i)
+            ret = append(ret, index)
+            return ret
+        }
+    }
+    return ret
+}
+
 func main() {
     str := common.GetStringFromFile("./data1.txt")
     strs := common.Split(str, "\n")
@@ -29,5 +47,7 @@ func main() {
         return
     }
     ret := twoSum(nums, 9)
+    fmt.Println(ret)
+    ret = twoSum_2(nums, 9)
     fmt.Println(ret)
 }
