@@ -26,6 +26,20 @@ class Solution(object):
                     ret.append(j)
                     return ret
         return ret
+    def twoSum_2(self, nums, target):
+        ret = []
+        n = len(nums)
+        hmap = {}
+        for i in range(0, n):
+            hmap[nums[i]] = i
+        for i in range(0, n - 1):
+            sub = target - nums[i]
+            if hmap.has_key(sub) and sub != i:
+                ret.append(i)
+                ret.append(hmap[sub])
+                return ret
+        return ret
+
 
 if __name__ == '__main__':
     try:
@@ -48,6 +62,8 @@ if __name__ == '__main__':
             exit
         array = ret["array"]
         ret = solution.twoSum(array, 9)
+        print ret
+        ret = solution.twoSum_2(array, 9)
         print ret
     except Exception as ex:
         print ex
