@@ -32,9 +32,9 @@ class Solution(object):
         hmap = {}
         for i in range(0, n):
             hmap[nums[i]] = i
-        for i in range(0, n - 1):
+        for i in range(0, n):
             sub = target - nums[i]
-            if hmap.has_key(sub) and sub != i:
+            if hmap.has_key(sub) and hmap[sub] != i:
                 ret.append(i)
                 ret.append(hmap[sub])
                 return ret
