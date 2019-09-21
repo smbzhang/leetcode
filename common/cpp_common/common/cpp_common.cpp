@@ -38,6 +38,20 @@ namespace common {
     }
     return ret;
 }
+
+void vector_to_list(const std::vector<int> array, ListNode *list) {
+    ListNode *head = list;
+    for (auto tmp : array) {
+        if (list == NULL) {
+            list = new ListNode(tmp);
+            head = list;
+        }
+        ListNode *node = new ListNode(tmp);
+        list->next = node;
+        list = node;
+    }
+    return head;
+}
 */
 }
 }
