@@ -54,7 +54,7 @@ if __name__ == '__main__':
         if ret["result"] != 0:
             print ret["msg"]
             exit
-        strs = ret["strs"]
+        strs = ret["array"]
         
         ret = common.strings_to_ints(strs)
         if ret["result"] != 0:
