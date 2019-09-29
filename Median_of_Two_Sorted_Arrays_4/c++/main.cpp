@@ -5,6 +5,8 @@
 #include "common/cpp_common.h"
 using namespace std;
 
+//https://blog.csdn.net/lw_power/article/details/97184524
+
 class Solution {
 public:
     // 不创建数组存放所有的排序结果,这样处理偶数的时候会非常麻烦
@@ -84,6 +86,7 @@ public:
     }
 
     // 使用二分法来进行查找
+    // https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(mn)))-solution-with-explanation
     double findMedianSortedArrays_3(vector<int>& nums1, vector<int>& nums2) {
         int m = nums1.size(), n = nums2.size(), imax = nums1.size(), imin = 0;
         if (m > n) {
@@ -117,7 +120,80 @@ public:
         }
         return 0.0;
     }
- 
+    // 查找第k个最大的数
+    // https://blog.csdn.net/yutianzuijin/article/details/11499917
+    double findMedianSortedArrays_4(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size(), n = nums2.size();
+        int k = (m + n) / 2 + 1;
+        if ((m + n) & 0x01) return kth(&*nums1.begin(), m, &*nums2.begin(), n, k);
+        else {
+            int a = kth(&*nums1.begin(), m, &*nums2.begin(), n, (m + n) / 2);
+            int b = kth(&*nums1.begin(), m, &*nums2.begin(), n, (m + n) / 2 + 1);
+            return (a + b) / 2.0;
+        }
+    }
+    // 寻找第k大的数
+    int kth(int *a, int m, int *b, int n, int k) {
+        if (m > n) {
+            return kth(b, n, a, m, k);
+        }
+        if (m == 0) {
+            return b[k - 1];
+        }
+        if (n == 0) {
+            return a[k - 1];
+        }
+        if (k == 1) {
+            return std::min(a[0], b[0]);
+        }
+        int pa = std::min(k / 2, m);
+        int pb = k - pa;
+        if (a[pa - 1] > b[pb - 1]) {
+            return kth(a, m, b + pb, n - pb, k - pb);
+        }else if (a[pa - 1] < b[pb - 1]) {
+            return kth(a + pa, m - pa, b, n, k - pa);
+        }else {
+            return a[pa - 1];
+        }
+    }    
+    // 查找第k个最大的数
+    // https://blog.csdn.net/yutianzuijin/article/details/11499917
+    double findMedianSortedArrays_5(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size(), n = nums2.size();
+        int k = (m + n) / 2 + 1;
+        if ((m + n) & 0x01) return kth(nums1, m, nums2, n, k);
+        else {
+            int a = kth(nums1, m, nums2, n, (m + n) / 2);
+            int b = kth(nums1, m, nums2, n, (m + n) / 2 + 1);
+            return (a + b) / 2.0;
+        }
+    }
+    // 寻找第k大的数
+    int kth(vector<int> a, int m, vector<int> b, int n, int k) {
+        // 让 m 小 可以保证缩小二分查找的循环次数
+//        if (m > n) {
+//            return kth(b, n, a, m, k);
+//        }
+        if (m == 0) {
+            return b[k - 1];
+        }
+        if (n == 0) {
+            return a[k - 1];
+        }
+        if (k == 1) {
+            return std::min(a[0], b[0]);
+        }
+        int pa = std::min(k / 2, m);
+        int pb = k - pa;
+        if (a[pa - 1] > b[pb - 1]) {
+            return kth(a, m, vector<int>(b.begin() + pb, b.end()), n - pb, k - pb);
+        }else if (a[pa - 1] < b[pb - 1]) {
+            return kth(vector<int>(a.begin() + pa, a.end()), m - pa, b, n, k - pa);
+        }else {
+            return a[pa - 1];
+        }
+    }
+
 };
 
 int main() {
@@ -134,7 +210,7 @@ int main() {
     leetcode::common::strings_to_numbers(strs1, nums1);
     leetcode::common::strings_to_numbers(strs2, nums2);
     
-    double ret = Solution().findMedianSortedArrays_3(nums1, nums2);
+    double ret = Solution().findMedianSortedArrays_5(nums1, nums2);
     cout << ret << endl;
 
     return 0;
