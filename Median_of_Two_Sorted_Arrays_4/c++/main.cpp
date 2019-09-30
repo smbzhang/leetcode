@@ -155,7 +155,58 @@ public:
         }else {
             return a[pa - 1];
         }
-    }    
+    }
+
+    // 查找第k个最大的数
+    // https://blog.csdn.net/yutianzuijin/article/details/11499917
+    double findMedianSortedArrays4_1(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size(), n = nums2.size();
+        int k = (m + n) / 2 + 1;
+        if ((m + n) & 0x01) return kth_4_1(&*nums1.begin(), m, &*nums2.begin(), n, k);
+        else {
+            int a, b;
+            if (m == 0) a = kth_4_1(NULL, m, &*nums2.begin(), n, (m + n) / 2);
+            else if (n == 0) b = kth_4_1(&*nums1.begin(), m, NULL, n, (m + n) / 2 + 1);
+            else{
+                a = kth_4_1(&*nums1.begin(), m, &*nums2.begin(), n, (m + n) / 2);
+                b = kth_4_1(&*nums1.begin(), m, &*nums2.begin(), n, (m + n) / 2 + 1);
+            }
+            return (a + b) / 2.0;
+        }
+    }
+    // 寻找第k大的数
+    int kth_4_1(int *a, int m, int *b, int n, int k) {
+        // 如果不保证 m <= n, 下面的逻辑就要改变
+        // if (m > n) {
+        //    return kth(b, n, a, m, k);
+        // }
+        if (m == 0) {
+            return b[k - 1];
+        }
+        if (n == 0) {
+            return a[k - 1];
+        }
+        if (k == 1) {
+            return std::min(a[0], b[0]);
+        }
+        // 这里就需要判断 m 和 n 的值，防止两个数组的溢出
+        int pa, pb;
+        if (m <= n) {
+            pa = std::min(k / 2, m);
+            pb = k - pa;
+        }else {
+            pb = std::min(k / 2, n);
+            pa = k - pb;
+        }
+        if (a[pa - 1] > b[pb - 1]) {
+            return kth_4_1(a, m, b + pb, n - pb, k - pb);
+        }else if (a[pa - 1] < b[pb - 1]) {
+            return kth_4_1(a + pa, m - pa, b, n, k - pa);
+        }else {
+            return a[pa - 1];
+        }
+    }
+
     // 查找第k个最大的数
     // https://blog.csdn.net/yutianzuijin/article/details/11499917
     double findMedianSortedArrays_5(vector<int>& nums1, vector<int>& nums2) {
@@ -171,9 +222,9 @@ public:
     // 寻找第k大的数
     int kth(vector<int> a, int m, vector<int> b, int n, int k) {
         // 让 m 小 可以保证缩小二分查找的循环次数
-//        if (m > n) {
-//            return kth(b, n, a, m, k);
-//        }
+        if (m > n) {
+            return kth(b, n, a, m, k);
+        }
         if (m == 0) {
             return b[k - 1];
         }
@@ -210,8 +261,14 @@ int main() {
     leetcode::common::strings_to_numbers(strs1, nums1);
     leetcode::common::strings_to_numbers(strs2, nums2);
     
-    double ret = Solution().findMedianSortedArrays_5(nums1, nums2);
+    double ret = Solution().findMedianSortedArrays4_1(nums1, nums2);
     cout << ret << endl;
+
+    std::cout << "nums1 is empty !" << std::endl;
+    nums1 = std::vector<int>();
+    nums2 = std::vector<int>(1, 3);
+    ret = Solution().findMedianSortedArrays4_1(nums1, nums2);
+    std::cout << ret << std::endl;
 
     return 0;
 }
