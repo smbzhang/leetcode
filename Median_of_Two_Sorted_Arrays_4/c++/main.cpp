@@ -281,6 +281,7 @@ int main() {
     nums2 = std::vector<int>();
     nums2.push_back(2);
     nums2.push_back(3);
+
     ret = Solution().findMedianSortedArrays4_1(nums1, nums2);
     std::cout << ret << std::endl;
 
