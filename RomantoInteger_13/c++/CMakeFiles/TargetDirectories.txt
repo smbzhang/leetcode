@@ -1,3 +1,0 @@
-/home/smbzhang/workroot/leetcode/RomantoInteger_13/c++/CMakeFiles/rebuild_cache.dir
-/home/smbzhang/workroot/leetcode/RomantoInteger_13/c++/CMakeFiles/edit_cache.dir
-/home/smbzhang/workroot/leetcode/RomantoInteger_13/c++/CMakeFiles/a.out.dir
