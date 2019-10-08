@@ -7,6 +7,7 @@
 #include <map>
 #include <climits>
 #include <unordered_map>
+#include <queue>
 using namespace std;
 
 // https://leetcode.com/problems/letter-combinations-of-a-phone-number/
@@ -45,7 +46,34 @@ public:
         return result;
     }
 
-    // 补充一个 BFS 的解法
+    // 补充一个 BFS 的解法,使用队列实现
+    vector<string> letterCombinations_bfs(string digits) {
+        std::queue<string> myqueue;
+        std::vector<string> result;
+        if (digits.length() < 1) return result;
+        for (int i = 0; i < records[digits[0]].length(); i++)
+        {
+            string str = "";
+            str += records[digits[0]][i];
+            myqueue.push(str);
+        }
+        for (int i = 1; i < digits.length(); i++) {
+            int len = myqueue.size();
+            while(len--) {
+                string str = myqueue.front();
+                for (int j = 0; j < records[digits[i]].length(); j++) {
+                    myqueue.push(str + records[digits[i]][j]);
+                }
+                myqueue.pop();
+            }
+        }
+        while(!myqueue.empty()) {
+            result.push_back(myqueue.front());
+            myqueue.pop();
+        }
+        return result;
+    }
+ 
 private:
     unordered_map<char, string> records;
 };
@@ -60,7 +88,7 @@ int main() {
     Solution *solution = new Solution(); 
     for (auto str : strs) {
         cout << str << endl;
-        auto result = solution->letterCombinations(str);
+        auto result = solution->letterCombinations_bfs(str);
         for (int i = 0; i < result.size(); i++) {
             cout << result[i] << " ";
         }
