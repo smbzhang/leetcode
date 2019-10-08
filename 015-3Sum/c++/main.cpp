@@ -33,6 +33,30 @@ public:
         }
         return result;
     }
+    vector<vector<int>> threeSum_1(vector<int>& nums) {
+        vector<vector<int> > result;
+        std::sort(nums.begin(), nums.end());
+        int n = nums.size();
+        // 1. 先确定第一个数
+        for (int i = 0; i < n - 2 && nums[i] <= 0; i++) {
+            if (nums[i] > 0) break;
+            if (i > 0 && nums[i] == nums[i-1]) continue;
+            // 2. 确定第二个数
+            for (int j = i + 1; j < n - 1; j++) {
+                if (j > (i + 1) && nums[j] == nums[j - 1]) continue;
+                int target = 0 - nums[i] - nums[j];
+                // 3. 确定第三个数
+                for (int k = j + 1; k < n; k++) {
+                    if (nums[k] == target) {
+                        result.push_back(std::vector<int>{nums[i], nums[j], nums[k]});
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+ 
     // 优化一下上面找第二个和第三个数的算法，上面是循环遍历找，这里使用两个指针进行查找
     vector<vector<int>> threeSum_2(vector<int>& nums) {
         vector<vector<int> > result;
