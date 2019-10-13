@@ -90,6 +90,21 @@ void get_list_from_file(const std::string& src_file, const char sep, ListNode **
     vector_to_list(array, list);
 }
 
+std::vector<ListNode *> get_lists_from_file(const std::string& src_file, const char sep_list, const char sep_node) {
+    std::vector<std::string> lines;
+    std::vector<ListNode *> result;
+    get_vector_from_file<std::string>(src_file, sep_list, lines);
+    for (int i = 0; i < lines.size(); i++) {
+        std::vector<std::string> nodesStr = split(lines[i], sep_node);
+        std::vector<int> nodes;
+        strings_to_numbers<int>(nodesStr, nodes);
+        ListNode *list = NULL;
+        vector_to_list(nodes, &list);
+        result.push_back(list);
+    }
+    return result;
+}
+
 void print_list(ListNode *list) {
     std::cout << "------------------------------ list-begin ------------------------------" << std::endl;
     while (list != NULL) {

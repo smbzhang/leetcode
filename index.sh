@@ -6,4 +6,4 @@ cscope -Rbkq -i cscope.files
 ctags -R --c++-kinds=+p --fields=+iaS --extra=+q
 
 # gotags
-gotags -R ./ leetcode_tags
+# gotags -R ./ leetcode_tags
