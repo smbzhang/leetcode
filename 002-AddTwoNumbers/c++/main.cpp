@@ -2,6 +2,7 @@
 #include "datastruct/data_struct.h"
 #include "common/cpp_common.h"
 #include <stack>
+#include <vector>
 
 using namespace std;
 
@@ -101,6 +102,7 @@ int main(int argc, char *argv[]) {
     Solution *solution = new Solution();
     ListNode *ret = solution->addTwoNumbers_2(list1, list2);
     leetcode::common::print_list(ret);
-
+    std::vector<int> array;
+    array.
     return 0;
 }
