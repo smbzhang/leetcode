@@ -31,6 +31,7 @@ public:
         return ret;
     }
 
+    // 使用递归实现单链表的反转
     ListNode *reverseList(ListNode* head, int k) {
         if (k <= 1 || head == NULL || head->next == NULL) {
             return head;
@@ -40,6 +41,7 @@ public:
         head->next = NULL;
         return tail;
     }
+    // 使用头插法实现 O(n) 非递归的单链表反转，找到 head，然后遍历中的每一个元素都插入到head的前面。
 };
 
 int main(int argc, char *argv[]) {
@@ -52,7 +54,7 @@ int main(int argc, char *argv[]) {
     cout << "please enter k: " << endl;
     cin >> k;
     //ListNode *ret = solution->reverseKGroup(lists, k);
-    ListNode *ret = solution->reverseKGroup(lists[0], k);
+    ListNode *ret = solution->reverseKGroup_2(lists[0], k);
     leetcode::common::print_list(ret);
 
     return 0;
