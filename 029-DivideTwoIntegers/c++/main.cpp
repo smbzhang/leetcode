@@ -8,7 +8,7 @@
 using namespace std;
 class Solution {
 public:
-    // O(dividend) 使用了 long long int， 来判断边界，不符合题目要求， 还使用了乘法  -ret
+    // O(dividend) 使用了 long long int， 来判断边界，不符合题目要求
     int divide(int dividend_, int divisor_) {
         long long int dividend = dividend_, divisor = divisor_;
         if (divisor == 0) return INT_MAX;
@@ -29,8 +29,8 @@ public:
         if (ret > INT_MAX) return INT_MAX;
         return ret;
     }
-
-    int divide_2(int dividend, int divisor) {
+    // 使用负数进行计算的好处是不用判断 a = INT_MIN 的情况，这种情况下，正数很难处理
+    int divide_3(int dividend, int divisor) {
         int ret = 0;
         bool sign = (dividend > 0) ^ (divisor < 0);
         /*
@@ -45,16 +45,17 @@ public:
             int i = 0;
             // 如果直接判断 dividend <= divisor << i, divisor << i 会溢出，-2147483648， 1 这个例子就会一直死循环
             // for (; dividend <= divisor << i; i++);
-            for (; dividend <= (int)((unsigned int)divisor << i); i++) {
-                if ((divisor << i) < (1 << 31 | 1 << 30)) {
+            for (; dividend <= static_cast<unsigned int>(divisor) << i; i++) {
+                if ((static_cast<unsigned int>(divisor) << i) < (1 << 31 | 1 << 30)) {
                     i++;
                     break;
                 }
             }
             
-            //ret += 1 << i;   // 如果 ret 是正数来计算的话， ret 可能会溢出，需要判断溢出
+            // ret = ret - 1 << (i - 1)   其中 ret 可能会溢出， 当 i == 32 的时候, 也就是 dividend == INT_MIN && divisor == 1 或者 -1 的时候
+            if (i == 32) return sign ? INT_MAX : INT_MIN;
             ret -= 1 << (i - 1);
-            dividend -= divisor << (i - 1);
+            dividend -= static_cast<unsigned int>(divisor) << (i - 1);
         }
         if (ret <= INT_MIN) return INT_MAX;
         if (!sign) {
@@ -62,8 +63,8 @@ public:
         }
         return 0 - ret;
     }
-     
-    int divide_3(int dividend, int divisor) {
+         
+    int divide_2(int dividend, int divisor) {
         if (divisor == 0) return INT_MAX;
         bool sign = (dividend < 0) ^ (divisor < 0);
         int ret = 0, sum = 0;
