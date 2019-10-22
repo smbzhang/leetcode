@@ -68,6 +68,41 @@ public:
     }
 
     std::unordered_set<string> records;
+
+    vector<int> findSubstring_2(string s, vector<string> &words) {
+        vector<int> result;
+        if (words.size() == 0 || s.length() == 0) return result;
+        int len = words[0].size(), lens = len * words.size();
+        int n = s.length();
+        std::unordered_map<string, int> hmap;
+        for (int i = 0; i < words.size(); i++) {
+            if (hmap.find(words[i]) != hmap.end()) {
+                hmap[words[i]]++;
+            }else{
+                hmap[words[i]] = 1;
+            }
+        }
+        for (int i = 0; i <= n - lens; i++) {
+            std::unordered_map<string, int> temp_map;
+            bool flag = true;
+            for (int j = 0; j < words.size(); j++) {
+                string str = s.substr(i + len * j, len);
+                if (hmap.find(str) == hmap.end()) {
+                    flag =  false;
+                    break;
+                }else{
+                    if (temp_map.find(str) == temp_map.end()) temp_map[str] = 1;
+                    else temp_map[str]++;
+                    if (temp_map[str] > hmap[str]) {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+            if (flag) {result.push_back(i);}
+        }
+        return result;
+    }
 };
 
 int main(int argc, char *argv[]) {
@@ -84,7 +119,7 @@ int main(int argc, char *argv[]) {
             cout << words[i] << " ";
         }
         cout << endl;
-        vector<int> ret = solution->findSubstring(strs[i], words);
+        vector<int> ret = solution->findSubstring_2(strs[i], words);
         for (int i = 0; i < ret.size(); i++) {
             cout << ret[i] << " ";
         }
