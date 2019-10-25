@@ -67,7 +67,85 @@ public:
         }
         return result;
     }
+    // 解法三：使用动态规划, 递归实现，时间上击败了 90， 空间上 50
+    /**
+     * d[i]  以s[i]结尾的符合条件字符串
+     * d[i] = 0  if(s[i] == '(')
+     * else:
+     * d[i] = d[i - 2] + 2    if (s[i - 1] == '(')
+     * d[i] = d[i - 1] + 2    if (s[i - 1] == ')' && i - d[i - 1] - 1 >= 0 && s[i - d[i - 1] - 1] == '(')
+     * d[i] = d[i - 1]        if (s[i - 1] == ')' &&          i - d[i - 1] - 1 >= 0 && s[i - d[i - 1] - 1] == ')'  || i - d[i - 1] - 1 < 0)
+     */
+    int longestValidParentheses_3(string s) {
+        vector<int> records(s.length(), -1);
+        int result = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int ret = func(s, i, records);
+            result = ret > result ? ret : result;
+        }
+        return result;
+    }
+    
+    int func(const string &s, int i, std::vector<int> &records) {
+        if (i < 0 || i >= s.length()) return 0;
+        if (records[i] != -1) return records[i];
+        if (i < 1) {
+            records[i] = 0;
+            return 0;
+        }
+        if (s[i] == '(') {
+            records[i] = 0;
+            return 0;
+        }
+        int result = 0;
+        if (s[i - 1] == '(') {
+            records[i] = func(s, i - 2, records) + 2;
+            result = records[i];
+        }else{
+            int pre_len = func(s, i - 1, records);
+            int j = i - pre_len - 1;
+            if (j >= 0 && s[j] == '(') {
+                records[i] = pre_len + 2 + func(s, j - 1, records);
+                result = records[i];
+            }
+            else {
+                records[i] = 0;
+                result = records[i];
+            }
+        }
+        return result;
+    }
 
+    // 不实用递归来实现动态规划
+    int longestValidParentheses_4(string s) {
+        vector<int> records(s.length(), 0);
+        int result = 0;
+        for (int i = 1; i < s.length(); i++) {
+            if (s[i] == '(') {
+                records[i] = 0;
+                continue;
+            }
+            if (s[i - 1] == ')') {
+                int j = i - 1 - records[i - 1];
+                if (j < 0) {
+                    records[i] = 0;
+                    continue;
+                }else{
+                    if (s[j] == '(') {
+                        records[i] = j - 1 < 0 ? 2 + records[i - 1] : 2 + records[i - 1] + records[j - 1];
+                        result = records[i] > result ? records[i] : result;
+                    }else{
+                        records[i] = 0;
+                    }
+                }
+            }else{
+                int j = i - 2;
+                records[i] = (j >= 0) ? 2 + records[j] : 2;
+                result = records[i] > result ? records[i] : result;
+            }
+        }
+        return result;
+    }
 };
 
 int main() {
@@ -78,7 +156,7 @@ int main() {
     Solution *solution = new Solution(); 
     for (auto str : strs) {
         cout << str << endl;
-        auto result = solution->longestValidParentheses_2(str);
+        auto result = solution->longestValidParentheses_4(str);
         cout << result << endl;
     }
    
