@@ -73,8 +73,8 @@ public:
      * d[i] = 0  if(s[i] == '(')
      * else:
      * d[i] = d[i - 2] + 2    if (s[i - 1] == '(')
-     * d[i] = d[i - 1] + 2    if (s[i - 1] == ')' && i - d[i - 1] - 1 >= 0 && s[i - d[i - 1] - 1] == '(')
-     * d[i] = d[i - 1]        if (s[i - 1] == ')' &&          i - d[i - 1] - 1 >= 0 && s[i - d[i - 1] - 1] == ')'  || i - d[i - 1] - 1 < 0)
+     * d[i] = d[i - 1] + 2 + d[i - d[i - 1] - 1 - 1]    if (s[i - 1] == ')'
+     * d[i] = 0        if (s[i - 1] == ')'
      */
     int longestValidParentheses_3(string s) {
         vector<int> records(s.length(), -1);
