@@ -17,8 +17,30 @@ public:
     }
 
     // 解法三：迭代法，上面的递归，回溯的分支太多，这里通过迭代进行优化
+    bool isMatch_3(string s, string p) {
+        int i = 0, j = 0, record = -1, ss = 0;
+        while (i < s.length()) {
+            if (j < p.length() && (s[i] == p[j] || p[j] == '?')) {
+                i++; j++;
+            }
+            else if (j < p.length() && p[j] == '*') {
+                ss = i;
+                record = j;
+                j++;
+            }
+            else if (record != -1) {
+                i = ss++;
+                j = record + 1;
+            }
+            else
+                return false;
+        }
+        while (j < p.length() && p[j] == '*') {
+            j++;
+        }
+        return j == p.length();
+    }
     
-
     // 解法二：动态规划求解
     bool isMatch_2(string s, string p) {
         int n1 = s.length(), n2 = p.length();
@@ -41,7 +63,8 @@ public:
 int main(int argc, char *argv[]) {
 
     Solution solution;
-    cout << solution.isMatch("aaabbbaabaaaaababaabaaabbabbbbbbbbaabababbabbbaaaaba", "a*******b") << endl;
+    cout << solution.isMatch_3("aaabbbaabaaaaababaabaaabbabbbbbbbbaabababbabbbaaaaba", "a*******b") << endl;
+    cout << solution.isMatch_3("aaa", "*a") << endl;
 
     return 0;
 }
