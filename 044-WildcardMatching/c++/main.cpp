@@ -8,17 +8,16 @@ using namespace std;
 // https://leetcode.com/problems/regular-expression-matching/
 class Solution {
 public:
-    //解法一: 递归求解
+    //解法一: 递归求解， 严重超时，跑主函数的case跑了一份多种，在我的虚拟机上面
     bool isMatch(string s, string p) {
         if (p.empty()) return s.empty();
-        bool first_match = !s.empty() && (p[0] == s[0] || p[0] == '.');
-        if (p.length() > 1 && p[1] == '*') {
-            return (isMatch(s, p.substr(2)) || \
-                    (first_match && isMatch(s.substr(1), p)));
-        }else{
-            return first_match && isMatch(s.substr(1), p.substr(1));
-        }
+        if (p[0] != '*')  return !s.empty() && (s[0] == p[0] || p[0] == '?') && isMatch(s.substr(1), p.substr(1));
+        // 如果p[0] == '*', 需要考虑匹配 0 次和多次的情况
+        return isMatch(s, p.substr(1)) || (!s.empty() && isMatch(s.substr(1), p));
     }
+
+    // 解法三：迭代法，上面的递归，回溯的分支太多，这里通过迭代进行优化
+    
 
     // 解法二：动态规划求解
     bool isMatch_2(string s, string p) {
@@ -42,7 +41,7 @@ public:
 int main(int argc, char *argv[]) {
 
     Solution solution;
-    cout << solution.isMatch_2("aa", "*") << endl;
-    
+    cout << solution.isMatch("aaabbbaabaaaaababaabaaabbabbbbbbbbaabababbabbbaaaaba", "a*******b") << endl;
+
     return 0;
 }
