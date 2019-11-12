@@ -63,7 +63,7 @@ public:
         }
         return true;
     }
-
+   
     int totalNQueens_2(int n) {
         int result = 0;
         vector<vector<char> > records(n, vector<char>(n, '.'));
@@ -99,6 +99,34 @@ public:
         }
         return true;
     }
+
+    int totalNQueens_3(int n) {
+        int result = 0;
+        vector<vector<char> > records(n, vector<char>(n, '.'));
+        vector<bool> tmp45(n + 2 * (n - 1), false);
+        vector<bool> tmp135(n + 2 * (n - 1), false);
+        vector<bool> tmpj(n, false);
+        backtrace_3(n, 0, records, result, tmpj, tmp45, tmp135);
+        return result;
+    }
+
+    void backtrace_3(int n, int row, vector<vector<char> >& records, int &result, vector<bool>& tmpj, vector<bool>& tmp45, vector<bool>& tmp135) {
+        if (row == n) {
+            result++;
+            return;
+        }
+        int i = row;
+        for (int j = 0; j < n; j++) {
+            if (!tmpj[j] && !tmp45[j + (n - 1 - i) + n - 1] && !tmp135[j - (n - 1 - i) + n - 1]){
+                tmpj[j] = true; tmp45[j + (n - 1 - i) + n - 1] = true; tmp135[j - (n - 1 - i) + n - 1] = true;
+                records[row][i] = 'Q';
+                backtrace_3(n, row + 1, records, result, tmpj, tmp45, tmp135);
+                records[row][i] = '.';
+                tmpj[j] = false; tmp45[j + (n - 1 - i) + n - 1] = false; tmp135[j - (n - 1 - i) + n - 1] = false;
+            }
+        }
+    }
+    
 };
 
 int main(int argc, char *argv[]) {
@@ -111,7 +139,7 @@ int main(int argc, char *argv[]) {
     Solution *solution = new Solution();
     cout << solution->isvalid_2(records, 3, 4);
     while (cin >> n) {
-        int res = solution->totalNQueens_2(n);
+        int res = solution->totalNQueens_3(n);
         cout << res << endl;
     }
     

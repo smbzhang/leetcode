@@ -113,7 +113,7 @@ public:
 
         return result;
     }
-
+    // 解法二：每次填一个Q就判断一次，剪枝
     void backtrace_2(int n, int row, vector<vector<string> >& result, vector<string>& records) {
         if (row == n) {
             result.push_back(records);
@@ -125,13 +125,42 @@ public:
             records[row][i] = '.';
         }
     }
+
+    // 解法三： 继续优化上面的 isvaild 的判断，使用 bitmask, 直接 4ms
+    vector<vector<string> > solveNQueens_3(int n) {
+        vector<vector<string> > result;
+        vector<string> records(n, string(n, '.'));
+        vector<bool> tmp45(n + 2 * (n - 1), false);
+        vector<bool> tmp135(n + 2 * (n - 1), false);
+        vector<bool> tmpj(n, false);
+        backtrace_3(n, 0, records, result, tmpj, tmp45, tmp135);
+        return result;
+    }
+
+    void backtrace_3(int n, int row, vector<string>& records, vector<vector<string> >& result, vector<bool>& tmpj, vector<bool>& tmp45, vector<bool>& tmp135) {
+        if (row == n) {
+            result.push_back(records);
+            return;
+        }
+        int i = row;
+        for (int j = 0; j < n; j++) {
+            if (!tmpj[j] && !tmp45[j + (n - 1 - i) + n - 1] && !tmp135[j - (n - 1 - i) + n - 1]){
+                tmpj[j] = true; tmp45[j + (n - 1 - i) + n - 1] = true; tmp135[j - (n - 1 - i) + n - 1] = true;
+                records[row][j] = 'Q';
+                backtrace_3(n, row + 1, records, result, tmpj, tmp45, tmp135);
+                records[row][j] = '.';
+                tmpj[j] = false; tmp45[j + (n - 1 - i) + n - 1] = false; tmp135[j - (n - 1 - i) + n - 1] = false;
+            }
+        }
+    }
+
 };
 
 int main(int argc, char *argv[]) {
     int n = 0;
     Solution *solution = new Solution();
     while (cin >> n) {
-        vector<vector<string> > res = solution->solveNQueens_2(n);
+        vector<vector<string> > res = solution->solveNQueens_3(n);
         for (int i = 0; i < res.size(); i++) {
             for (int j = 0; j < n; j++) {
                 cout << res[i][j] << endl;
