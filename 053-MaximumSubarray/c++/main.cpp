@@ -33,6 +33,16 @@ public:
         }
         return max;
     }
+    // 解法二： 贪心算法
+    int maxSubArray_2(vector<int>& nums) {
+        int n = nums.size(), sum = 0, max = INT_MIN;
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
+            max = std::max(sum, max);
+            sum = std::max(0, sum);
+        }
+        return max;
+    }
 };
 
 int main() {
@@ -48,7 +58,7 @@ int main() {
         std::vector<string> array_s  = leetcode::common::split(str,',');
         std::vector<int> nums;
         leetcode::common::strings_to_numbers<int>(array_s, nums);
-        int result = solution->maxSubArray(nums);
+        int result = solution->maxSubArray_2(nums);
         cout << result << endl;   
     }
 
