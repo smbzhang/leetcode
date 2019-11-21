@@ -18,6 +18,7 @@ public:
         backtrace(grid, m, n, 0, 0, result, 0);
         return result;
     }
+    // 回溯法超时
     void backtrace(vector<vector<int> >& grid, int m, int n, int i, int j, int &result, int records) {
         if (i >= m || j >= n) return;
         if (i == m - 1 && j == n - 1) {
@@ -27,6 +28,27 @@ public:
         records += grid[i][j];
         backtrace(grid, m , n, i + 1, j, result, records);
         backtrace(grid, m, n, i, j + 1, result, records);
+    }
+
+    // DP algorithm  O(m * n)
+    int minPathSum_2(vector<vector<int> >& grid) {
+        int m = grid.size(), n = 0;
+        if (m != 0) n = grid[0].size();
+        if (m == 0 || n == 0) return 0;
+        vector<vector<int> > dp(m, vector<int>(n, 0));
+        dp[m - 1][n - 1] = grid[m - 1][n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            dp[m - 1][i] = grid[m - 1][i] + dp[m - 1][i + 1];
+        }
+        for (int i = m - 2; i >= 0; i--) {
+            dp[i][n - 1] = grid[i][n - 1] + dp[i + 1][n - 1];
+        }
+        for (int i = m - 2; i >= 0; i--) {
+            for (int j = n - 2; j >= 0; j--) {
+                dp[i][j] = grid[i][j] + std::min(dp[i + 1][j], dp[i][j + 1]);
+            }
+        }
+        return dp[0][0];
     }
 };
 
