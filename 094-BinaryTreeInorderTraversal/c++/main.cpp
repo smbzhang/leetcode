@@ -5,6 +5,7 @@
 #include "common/cpp_common.h"
 #include <algorithm>
 #include <map>
+#include <stack>
 using namespace std;
 
 // https://leetcode.com/problems/binary-tree-inorder-traversal/
@@ -30,6 +31,43 @@ public:
         loop(root->left, result);
         result.push_back(root->val);
         loop(root->right, result);
+    }
+    // 栈实现 inorder 遍历
+    vector<int> inorderTraversal_2(TreeNode *root) {
+        vector<int> result;
+        stack<TreeNode *> mystack;
+        while (root != nullptr) {
+            mystack.push(root);
+            root = root->left;
+        }
+        while (!mystack.empty()) {
+            root = mystack.top();
+            mystack.pop();
+            result.push_back(root->val);
+            root = root->right;
+            while(root != nullptr) {
+                mystack.push(root);
+                root = root->left;
+            }
+        }
+        return result;
+    }
+
+    // 栈实现 inorder 遍历 - 再优雅一点
+    vector<int> inorderTraversal_3(TreeNode *root) {
+        vector<int> result;
+        stack<TreeNode *> mystack;
+        while (root != nullptr || !mystack.empty()) {
+            while(root != nullptr) {
+                mystack.push(root);
+                root = root->left;
+            }
+            root = mystack.top();
+            mystack.pop();
+            result.push_back(root->val);
+            root = root->right;
+        }
+        return result;
     }
 };
 int main() {
