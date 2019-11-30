@@ -1,20 +1,37 @@
 #ifndef DATA_STRUCT_H
 #define DATA_STRUCT_H
 
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {
-        
-    }
-};
+#include <string>
+#include <stack>
+#include <queue>
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
 
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
+namespace leetcode{
+namespace common{
+    struct ListNode {
+        int val;
+        ListNode *next;
+        ListNode(int x) : val(x), next(NULL) {
+            
+        }
+    };
+    
+    struct TreeNode {
+        int val;
+        TreeNode *left;
+        TreeNode *right;
+        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    };
+
+    TreeNode *createTreeNode(const string& str);
+    TreeNode *ConstructTree(const vector<string>& array); 
+    vector<int> InorderTraversal(TreeNode* root); 
+    void loop(TreeNode *root, vector<int> &result); 
+    vector<vector<int> > levelOrder(TreeNode* root);
+}
+}
 
 
 #endif
