@@ -58,6 +58,31 @@ public:
             first->val = tmp;
         }
     }
+
+    // 在in-order递归过程中，进行判断，虽然没用栈，但是还是使用了递归，使用递归控价复杂度就不是 O(1)
+    void recoverTree_2(TreeNode* root) {
+        first = nullptr;
+        second = nullptr;
+        pre = nullptr;
+        loop(root);
+        if (first && second) std::swap(first->val, second->val);
+    }
+    void loop(TreeNode *root) {
+        if (root == nullptr) return;
+        loop(root->left);
+        if (pre == nullptr) pre = root;
+        else {
+            if (first == nullptr && pre->val > root->val) first = pre;
+            if (first != nullptr && pre->val > root->val) second = root;
+        }
+        pre = root;
+        loop(root->right);
+    }
+
+private:
+    TreeNode *pre;
+    TreeNode *first;
+    TreeNode *second;
 };
 
 int main() {
@@ -68,7 +93,7 @@ int main() {
     TreeNode *root = leetcode::common::ConstructTree(strs);
     
     Solution *solution = new Solution();
-    solution->recoverTree(root);
+    solution->recoverTree_2(root);
     
 
     return 0;
