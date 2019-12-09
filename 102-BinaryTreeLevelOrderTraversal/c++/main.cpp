@@ -22,6 +22,7 @@ using namespace leetcode::common;
  */
 class Solution {
 public:
+    // 解法一: 使用 BFS 广搜
     vector<vector<int> > levelOrder(TreeNode* root) {
         vector<vector<int> > result;
         std::queue<TreeNode *> myqueue;
@@ -46,6 +47,27 @@ public:
         }
         return result;
     }
+
+    // 解法二: preorder 前序遍历解决 (深度优先搜索)
+    vector<vector<int> > levelOrder_2(TreeNode *root) {
+        int dep = depth(root);
+        vector<vector<int> > result(dep, vector<int>());
+        dfs(root, 0, result);
+        return result;
+    }
+
+    int depth(TreeNode *root) {
+        if (root == nullptr) return 0;
+        return std::max(depth(root->left) + 1, depth(root->right) + 1);
+    }
+
+    void dfs(TreeNode *root, int level, vector<vector<int> >& result) {
+        if (root == nullptr) return;
+        result[level].push_back(root->val);
+        dfs(root->left, level + 1, result);
+        dfs(root->right, level + 1, result);
+    }
+    
 };
 int main() {
     std::vector<std::string> strs;
