@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <map>
 #include <stack>
+#include <queue>
 using namespace std;
 using namespace leetcode::common;
 
@@ -38,6 +39,29 @@ public:
         dfs(root->left, level + 1, result);
         dfs(root->right, level + 1, result);
     }
+
+    // 解法二： BFS
+    vector<vector<int> > levelOrderBottom_2(TreeNode *root) {
+        vector<vector<int> > result;
+        if (root == nullptr) return result;
+        std::queue<TreeNode *> myqueue;
+        myqueue.push(root);
+        int level = 0;
+        while (!myqueue.empty()) {
+            int size = myqueue.size();
+            for (int i = 0; i < size; i++) {
+                if (result.size() <= level) result.push_back(vector<int>());
+                root = myqueue.front();
+                result[level].push_back(root->val);
+                myqueue.pop();
+                if (root->left) myqueue.push(root->left);
+                if (root->right) myqueue.push(root->right);
+            }
+            level++;
+        }
+        std::reverse(result.begin(), result.end());
+        return result;
+    }
 };
 int main() {
     std::vector<std::string> strs;
@@ -47,7 +71,7 @@ int main() {
     TreeNode *root = leetcode::common::ConstructTree(strs);
     
     Solution *solution = new Solution();
-    vector<vector<int> > result = solution->levelOrderBottom(root);
+    vector<vector<int> > result = solution->levelOrderBottom_2(root);
     for (int i = 0; i < result.size(); i++) {
         for (int j = 0; j < result[i].size(); j++) {
             cout << result[i][j] << " ";
