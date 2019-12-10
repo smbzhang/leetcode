@@ -30,6 +30,7 @@ namespace common{
     vector<int> InorderTraversal(TreeNode* root); 
     void loop(TreeNode *root, vector<int> &result); 
     vector<vector<int> > levelOrder(TreeNode* root);
+    vector<int> MirrosInorderTraversal(TreeNode *root);
 }
 }
 
