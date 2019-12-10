@@ -84,7 +84,7 @@ public:
                 root = root->right;
             }else {
                 // 寻找前驱结点
-                TreeNode *prenode = nullptr, *l = root->left;
+                TreeNode *l = root->left;
                 while (l->right != nullptr && l->right != root) {
                     l = l->right;
                 }
