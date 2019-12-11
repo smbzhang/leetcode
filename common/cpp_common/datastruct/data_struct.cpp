@@ -18,6 +18,7 @@ TreeNode *ConstructTree(const vector<string>& array) {
     for (int i = 1; i < array.size();) {
         TreeNode *root = myqueue.front();
         myqueue.pop();
+        if (root == nullptr) continue;
         root->left = createTreeNode(array[i++]);
         if (i < array.size()) root->right = createTreeNode(array[i++]);
         myqueue.push(root->left);
