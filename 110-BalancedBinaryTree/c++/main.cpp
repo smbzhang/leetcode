@@ -58,7 +58,7 @@ public:
     }
 private:
     std::map<TreeNode *, bool> bmap;
-    std::map<TreeNode *, bool> hmap;
+    std::map<TreeNode *, int> hmap;
 };
 
 int main() {
