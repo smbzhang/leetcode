@@ -22,7 +22,8 @@ namespace common{
         int val;
         TreeNode *left;
         TreeNode *right;
-        TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+        TreeNode *next;
+        TreeNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
     };
 
     TreeNode *createTreeNode(const string& str);
