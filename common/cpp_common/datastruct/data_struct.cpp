@@ -1,5 +1,7 @@
 #include "data_struct.h"
 
+// 树的遍历 非递归  https://leetcode.com/problems/binary-tree-postorder-traversal/discuss/45551/Preorder-Inorder-and-Postorder-Iteratively-Summarization
+
 namespace leetcode{
 namespace common{
 TreeNode *createTreeNode(const string& str) {
