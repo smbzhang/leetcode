@@ -24,6 +24,7 @@ using namespace leetcode::common;
 
 class Solution {
 public:
+    // 解法一： 使用队列
     vector<int> rightSideView(TreeNode* root) {
         vector<int> result;
         if (!root) return result;
@@ -41,6 +42,19 @@ public:
         }
         return result;
     }
+    // 解法二: 前序遍历 - 递归
+    vector<int> rightSideView_2(TreeNode * root) {
+        vector<int> result;
+        loop(root, 1, result);
+        return result;
+    }
+
+    void loop(TreeNode *root, int level, std::vector<int> &result) {
+        if (!root) return;
+        if (result.size() < level) result.push_back(root->val);
+        loop(root->right, level + 1, result);
+        loop(root->left, level + 1, result);
+    }
 };
 
 int main() {
@@ -51,7 +65,7 @@ int main() {
     TreeNode *root = leetcode::common::ConstructTree(strs);
     
     Solution *solution = new Solution();
-    vector<int> result = solution->rightSideView(root);
+    vector<int> result = solution->rightSideView_2(root);
     for (auto tmp : result) {
         cout << tmp << " ";
     }
