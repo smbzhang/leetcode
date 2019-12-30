@@ -11,6 +11,7 @@ using namespace std;
 // https://leetcode.com/problems/single-number/
 class Solution {
 public:
+    // 解法一: 使用 hash table
     int singleNumber(vector<int>& nums) {
         std::unordered_map<int, int> mp;
         mp.clear();
@@ -21,6 +22,14 @@ public:
             if (tmp.second == 1) return tmp.first;
         }
         return 0;
+    }
+    // 解法二: 使用 XOR 异或 - a ^ a = 0
+    int singleNumber_2(vector<int> &nums) {
+        int result = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            result ^= nums[i];
+        }
+        return result;
     }
 };
 
@@ -37,7 +46,7 @@ int main() {
         std::vector<string> array_s  = leetcode::common::split(str,',');
         std::vector<int> nums;
         leetcode::common::strings_to_numbers<int>(array_s, nums);
-        cout << solution->singleNumber(nums) << endl;;
+        cout << solution->singleNumber_2(nums) << endl;;
     }
    
     return 0;
