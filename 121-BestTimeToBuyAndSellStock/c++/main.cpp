@@ -5,13 +5,14 @@
 #include "common/cpp_common.h"
 #include <algorithm>
 #include <map>
+#include <climits>
 using namespace std;
 
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 class Solution {
 public:
     // 暴力法
-    int maxProfit(vector<int>& prices) {
+    int maxProfit_1(vector<int>& prices) {
         int ret = 0;
         for (int i = 0; i < prices.size(); i++) {
             for (int j = i + 1; j < prices.size(); j++) {
@@ -23,6 +24,15 @@ public:
         return ret;
     }
     // 一次遍历
+    int maxProfit(vector<int> &n) {
+        int ret = 0;
+        int low = INT_MAX;
+        for (int i = 0; i < n.size(); i++) {
+            low = n[i] < low ? n[i] : low;
+            ret = n[i] - low > ret ? n[i] - low : ret;
+        }
+        return ret;
+    }
     
     // DP
 };
