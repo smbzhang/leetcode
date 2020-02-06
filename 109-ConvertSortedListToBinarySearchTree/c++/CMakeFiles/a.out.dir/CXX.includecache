@@ -38,19 +38,3 @@ common/cpp_common.h
 stack
 -
 
-/home/vagrant/workspace/leetcode/common/cpp_common/datastruct/data_struct.cpp
-data_struct.h
-/home/vagrant/workspace/leetcode/common/cpp_common/datastruct/data_struct.h
-
-/home/vagrant/workspace/leetcode/common/cpp_common/datastruct/data_struct.h
-string
--
-stack
--
-queue
--
-iostream
--
-stdlib.h
--
-

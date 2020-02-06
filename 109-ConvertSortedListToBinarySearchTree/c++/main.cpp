@@ -51,7 +51,7 @@ public:
     }
     // 解法二：变成数组 - 空间复杂度 O（N）， 时间复杂度 O(logN)
     // 解法三： 简化解法一的寻找中间点的做法， O(logn)
-    TreeNode *sortedListToBST(ListNode* head) {
+    TreeNode *sortedListToBST_3(ListNode* head) {
         if (head == nullptr) return nullptr;
         if (head->next == nullptr) return new TreeNode(head->val);
         ListNode *fast = head, *slow = head, *pslow = nullptr;
@@ -67,6 +67,27 @@ public:
         root->right = sortedListToBST(slow->next);
         return root;
     }  
+    // 解法四: 使用中序遍历求解，链表的头结点一定是二叉树的最左边的结点。
+    TreeNode *sortedListToBST(ListNode* head) {
+        if (!head) return nullptr;
+        int n = 0;
+        ListNode* cur = head;
+        while (cur) {
+            n++;
+            cur = cur->next;
+        }
+        return loop_2(head, 0, n - 1);
+    }
+    TreeNode *loop_2(ListNode *&head, int start, int end) {
+        if (start > end) return nullptr;
+        int mid = (start + end) / 2;
+        TreeNode *root = new TreeNode(0);
+        root->left = loop_2(head, start, mid - 1);
+        root->val = head->val;
+        head = head->next;
+        root->right = loop_2(head, mid + 1, end);
+        return root;
+    }
     
 };
 
