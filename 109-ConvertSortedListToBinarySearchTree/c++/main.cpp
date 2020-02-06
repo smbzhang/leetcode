@@ -26,7 +26,7 @@ using namespace leetcode::common;
 class Solution {
 public:
     // 解法一：递归求解 时间复杂度 - O(nlogn), 空间复杂度 O(1)
-    TreeNode* sortedListToBST(ListNode* head) {
+    TreeNode* sortedListToBST_2(ListNode* head) {
         if (!head) return nullptr;
         int n = 0, mid;
         ListNode* cur = head;
@@ -50,7 +50,24 @@ public:
         return root;
     }
     // 解法二：变成数组 - 空间复杂度 O（N）， 时间复杂度 O(logN)
-    // 解法三： 中序遍历解法
+    // 解法三： 简化解法一的寻找中间点的做法， O(logn)
+    TreeNode *sortedListToBST(ListNode* head) {
+        if (head == nullptr) return nullptr;
+        if (head->next == nullptr) return new TreeNode(head->val);
+        ListNode *fast = head, *slow = head, *pslow = nullptr;
+        while (fast->next) {
+            pslow = slow;
+            slow = slow->next;
+            fast = fast->next;
+            if (fast->next) fast = fast->next;
+        }
+        pslow->next = nullptr;
+        TreeNode *root = new TreeNode(slow->val);
+        root->left = sortedListToBST(head);
+        root->right = sortedListToBST(slow->next);
+        return root;
+    }  
+    
 };
 
 int main(int argc, char *argv[]) {
