@@ -82,6 +82,32 @@ public:
         }
     }
     // 冒泡排序优化三：https://blog.csdn.net/hansionz/article/details/80822494
+    
+    // 归并排序
+    void merge_sort(std::vector<int>& nums) {
+        loop(nums, 0, nums.size() - 1);
+    }
+    void loop(vector<int>& nums, int start, int end) {
+        if (start >= end) return;
+        int mid = (start + end) / 2;
+        loop(nums, start, mid);
+        loop(nums, mid + 1, end);
+        merge(nums, start, mid, mid + 1, end);
+    }
+    void merge(vector<int>& nums, int i, int j, int m, int n) {
+        vector<int> a(nums.begin() + i, nums.begin() + j + 1), b(nums.begin() + m, nums.begin() + n + 1);
+        a.push_back(INT_MAX); b.push_back(INT_MAX);
+        int pa = 0, pb = 0;
+        for (int s = i; s <= n; s++) {
+            if (a[pa] <= b[pb]) {
+                nums[s] = a[pa];
+                pa++;
+            } else {
+                nums[s] = b[pb];
+                pb++;
+            }
+        }
+    }
 };
 
 int main() {
@@ -97,7 +123,8 @@ int main() {
         leetcode::common::strings_to_numbers<int>(array_s, nums);
         //solution->insert_sort(nums);
         //solution->select_sort(nums);
-        solution->bubbo_sort_3(nums);
+        //solution->bubbo_sort_3(nums);
+        solution->merge_sort(nums);
         cout << endl;
         for (auto tmp : nums) {
             cout << tmp << " ";
