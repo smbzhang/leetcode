@@ -17,6 +17,13 @@ namespace common{
             
         }
     };
+
+    struct Node {
+        int val;
+        Node* prev;
+        Node* next;
+        Node* child;
+    };
     
     struct TreeNode {
         int val;
