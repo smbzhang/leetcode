@@ -11,7 +11,7 @@ using namespace leetcode::common;
 //https://leetcode.com/problems/insertion-sort-list/
 class Solution {
 public:
-    ListNode* insertionSortList(ListNode* head) {
+    ListNode* insertionSortList_1(ListNode* head) {
         if (head == nullptr) return head;
         ListNode *dummy = new ListNode(INT_MIN);
         dummy->next = head;
@@ -38,6 +38,32 @@ public:
         }
         return dummy->next;
     }
+
+    ListNode* insertionSortList(ListNode* head) {
+        if (head == nullptr) return head;
+        ListNode *dummy = new ListNode(INT_MIN);
+        dummy->next = head;
+        auto tail = head;
+        head = head->next;
+        while (head) {
+            if (head->val >= tail->val) {
+                tail = head;
+                head = head->next;
+                continue;
+            }
+            auto tmp = dummy->next, pre = dummy;
+            while (tmp->val < head->val) {
+                pre = tmp;
+                tmp = tmp->next;
+            }
+            tail->next = head->next;
+            pre->next = head;
+            head->next = tmp;
+            head = tail->next;
+        }
+        return dummy->next;
+    }
+
 };
 
 

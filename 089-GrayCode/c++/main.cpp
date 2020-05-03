@@ -15,7 +15,7 @@ public:
     // 解法一：动态规划法
     // dp[n][i] = 0,dp[n - 1][i]      ; 0 <= i < N / 2  (N： 当前格雷码的总个数)
     //          = 1,dp[n][N - i - 1]  ; N / 2 <= i < N
-    vector<int> grayCode(int n) {
+    vector<int> grayCode_1(int n) {
         records.push_back(0);
         for (int i = 1; i <= n; i++) {
             int N = 1 << i;
@@ -26,6 +26,9 @@ public:
         }
         return records;
     }
+
+    // 解法二: 镜像法求解
+    
 private:
     std::vector<int> records;
 };
